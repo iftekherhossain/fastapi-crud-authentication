@@ -3,7 +3,7 @@ from fastapi import FastAPI, Depends
 from models import Student, Professor, Department, Faculty
 from fastapi.security import HTTPBasic, HTTPBasicCredentials
 from utils import MyAuthentication
-from typing import Annotated
+from typing_extensions import Annotated
 import json
 import uvicorn
 
