@@ -1,0 +1,42 @@
+{
+    "admin": [
+        {
+            "username": "admin1",
+            "password": "admin1password"
+        },
+        {
+            "username": "admin2",
+            "password": "admin2password"
+        }
+    ],
+    "superusers": [
+        {
+            "username": "superuser1",
+            "password": "superuser1password"
+        },
+        {
+            "username": "superuser2",
+            "password": "superuser2password"
+        }
+    ],
+    "users": [
+        {
+            "username": "user1",
+            "password": "user1password"
+        },
+        {
+            "username": "user2",
+            "password": "user2password"
+        }
+    ],
+    "guests": [
+        {
+            "username": "guest1",
+            "password": "guest1password"
+        },
+        {
+            "username": "guest2",
+            "password": "guest2password"
+        }
+    ]
+}

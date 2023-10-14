@@ -1,0 +1,96 @@
+{
+    "professors": [
+      {
+        "id": 1,
+        "name": "Dr. John Smith",
+        "position": "Professor of Computer Science",
+        "office": "Room 101",
+        "students": [
+          {
+            "id": 101,
+            "name": "Alice Johnson",
+            "major": "Computer Science"
+          },
+          {
+            "id": 102,
+            "name": "Bob Williams",
+            "major": "Computer Science"
+          },
+          {
+            "id": 103,
+            "name": "Eve Davis",
+            "major": "Computer Science"
+          }
+        ]
+      },
+      {
+        "id": 2,
+        "name": "Dr. Jane Doe",
+        "position": "Professor of Mathematics",
+        "office": "Room 202",
+        "students": [
+          {
+            "id": 104,
+            "name": "Grace Smith",
+            "major": "Mathematics"
+          },
+          {
+            "id": 105,
+            "name": "Chris Brown",
+            "major": "Mathematics"
+          },
+          {
+            "id": 106,
+            "name": "Linda Johnson",
+            "major": "Mathematics"
+          }
+        ]
+      }
+    ],
+    "faculties": [
+      {
+        "id": 1,
+        "name": "Faculty of Engineering",
+        "location": "Building A",
+        "depts": [
+          {
+            "id": 201,
+            "name": "Department of Mechanical Engineering",
+            "chairperson": "Dr. Emily Brown"
+          },
+          {
+            "id": 202,
+            "name": "Department of Electrical Engineering",
+            "chairperson": "Dr. James Wilson"
+          },
+          {
+            "id": 203,
+            "name": "Department of Civil Engineering",
+            "chairperson": "Dr. Sarah Clark"
+          }
+        ]
+      },
+      {
+        "id": 2,
+        "name": "Faculty of Science",
+        "location": "Building B",
+        "depts": [
+          {
+            "id": 204,
+            "name": "Department of Chemistry",
+            "chairperson": "Dr. Michael Davis"
+          },
+          {
+            "id": 205,
+            "name": "Department of Physics",
+            "chairperson": "Dr. Laura White"
+          },
+          {
+            "id": 206,
+            "name": "Department of Biology",
+            "chairperson": "Dr. Daniel Johnson"
+          }
+        ]
+      }
+    ]
+  }
