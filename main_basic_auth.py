@@ -43,11 +43,22 @@ async def get_professor(credentials: cred_class,prof_id):
             print(prof)
             if prof['id']==int(prof_id):
                 prof_copy = prof.copy()
-                prof_copy["links"]={"self":{"href":f"{HOST}:{PORT}/professors/{prof_id}"}}
-                return {"data": prof_copy,"status_code":200, "message":"Data parsed Successfully"}
+                prof_out = {}
+                for k,v in prof_copy.items():
+                    if type(v) == type([]):
+                        continue
+                    prof_out[k]=v
+                prof_out["links"]=[{"rel":"self","href":f"{HOST}:{PORT}/professors/{prof_id}","action":"GET"},
+                                    {"rel":"students","href":f"{HOST}:{PORT}/professors/{prof_id}/students/`student_id`","action":"GET"},
+                                    {"rel":"self","href":f"{HOST}:{PORT}/professors/`professor_id`/","action":"POST"},
+                                    {"rel":"self","href":f"{HOST}:{PORT}/professors/{prof_id}/update","action":"PUT"},
+                                    {"rel":"self","href":f"{HOST}:{PORT}/professors/{prof_id}/delete","action":"DELETE"}]
+                return prof_out
         return {"error":"", "status_code": 404, "messages":"Not Found"}
     except Exception as e:
-        return e
+        return {"error":"Invalid Url", "status_code": 422, "messages":"Please correct the URL."}
+    
+
 @app.get('/faculties/{fac_id}')
 async def get_faculties(credentials: cred_class,fac_id):
     user = myauth.get_valid_user(credentials)
@@ -59,11 +70,20 @@ async def get_faculties(credentials: cred_class,fac_id):
             print(fac)
             if fac['id']==int(fac_id):
                 fac_copy = fac.copy()
-                fac_copy['links']={"self":{"href":f"{HOST}:{PORT}/faculties/{fac_id}"}}
-                return {"data": fac_copy,"status_code":200, "message":"Data parsed Successfully"}
+                fac_out = {}
+                for k,v in fac_out.items():
+                    if type(v) == type([]):
+                        continue
+                    fac_out[k]=v
+                fac_out["links"]=[{"rel":"self","href":f"{HOST}:{PORT}/faculties/","action":"GET"},
+                                    {"rel":"departments","href":f"{HOST}:{PORT}/faculties/{fac_id}/students","action":"GET"},
+                                    {"rel":"self","href":f"{HOST}:{PORT}/faculties/{fac_id}/update","action":"PUT"},
+                                    {"rel":"self","href":f"{HOST}:{PORT}/faculties/{fac_id}/delete","action":"DELETE"}]
+                return fac_out
+        return {"error":"Not Found", "status_code": 404}
     except:
         return {"error":"Invalid Url", "status_code": 422, "messages":"Please correct the URL."}
-    return {"error":"", "status_code": 404, "messages":"Not Found"}
+    
 
 @app.get('/professors/{prof_id}/students/{std_id}')
 async def get_student(credentials: cred_class,prof_id,std_id):
@@ -77,11 +97,20 @@ async def get_student(credentials: cred_class,prof_id,std_id):
             for std in stds:
                 if std['id']==int(std_id) and prof['id']==int(prof_id):
                     std_copy = std.copy()
-                    std_copy['links']={"self":{"href":f"{HOST}:{PORT}/professors/{prof_id}/students/{std_id}"}}
-                    return {"data": std_copy,"status_code":200, "message":"Data parsed Successfully"}
+                    std_out = {}
+                    for k,v in std_copy.items():
+                        if type(v) == type([]):
+                            continue
+                        std_out[k]=v
+                    std_out["links"]=[{"rel":"self","href":f"{HOST}:{PORT}/professors/{prof_id}/students/{std_id}","action":"GET"},
+                                        {"rel":"self","href":f"{HOST}:{PORT}/professors/{prof_id}/students/`student_id`","action":"POST"},
+                                        {"rel":"self","href":f"{HOST}:{PORT}/professors/{prof_id}/update","action":"PUT"},
+                                        {"rel":"self","href":f"{HOST}:{PORT}/professors/{prof_id}/delete","action":"DELETE"}]
+                    return std_out
+        return {"error":"", "status_code": 404, "messages":"Not Found"}
     except:
         return {"error":"Invalid Url", "status_code": 422, "messages":"Please correct the URL."}
-    return {"error":"", "status_code": 404, "messages":"Not Found"}
+    
 
 @app.get('/faculties/{fac_id}/departments/{dep_id}',status_code=200)
 async def get_student(credentials: cred_class,fac_id,dep_id):
@@ -95,8 +124,16 @@ async def get_student(credentials: cred_class,fac_id,dep_id):
             for dep in deps:
                 if dep['id']==int(dep_id) and fac['id']==int(fac_id):
                     dep_copy = dep.copy()
-                    dep_copy['links']={"self":{"href":f"{HOST}:{PORT}/faculties/{fac_id}/departments/{dep_id}"}}
-                    return {"data": dep_copy,"status_code":200, "message":"Data parsed Successfully"} 
+                    dep_out = {}
+                    for k,v in dep_copy.items():
+                        if type(v) == type([]):
+                            continue
+                        dep_out[k]=v
+                    dep_out["links"]=[{"rel":"self","href":f"{HOST}:{PORT}/faculties/{fac_id}/departments/{dep_id}","action":"GET"},
+                                        {"rel":"students","href":f"{HOST}:{PORT}/faculties/{fac_id}/departments/`department_id`","action":"POST"},
+                                        {"rel":"self","href":f"{HOST}:{PORT}/faculties/{fac_id}/departments/{dep_id}/update","action":"PUT"},
+                                        {"rel":"self","href":f"{HOST}:{PORT}/faculties/{fac_id}/departments/{dep_id}/delete","action":"DELETE"}]
+                    return dep_out
         return {"error":"", "status_code": 404, "messages":"Not Found"}
     except Exception as e:
         return {"error":"Invalid Url", "status_code": 422, "messages":"Please correct the URL."}
@@ -129,6 +166,9 @@ def add_student(credentials: cred_class,student: Student,prof_id):
         for i,prof in enumerate(profs):
             print(prof)
             if prof['id']==int(prof_id):
+                keys= data['professors'][i].keys()
+                if "students" not in keys:
+                    data['professors'][i]["students"] = []    
                 data['professors'][i]["students"].append(student.dict())
                 break
         return {"status_code":201, "message":f"New Student of Professor {prof_id} Added Successfully"}
@@ -159,6 +199,9 @@ def add_department(credentials: cred_class,department: Department,fac_id):
         facs = data["faculties"]
         for i,fac in enumerate(facs):
             if fac['id']==int(fac_id):
+                keys= data['faculties'][i].keys()
+                if "depts" not in keys:
+                    data['faculties'][i]["depts"] = []
                 data['faculties'][i]["depts"].append(department.dict())
                 return {"status_code":201, "message":f"New Department of Faculty {fac_id} Added Successfully"}
     except:

@@ -11,7 +11,7 @@ class Professor(BaseModel):
     name: Optional[str]
     position: Optional[str]
     office: Optional[str]
-    students: Optional[List[Student]]
+    # students: Optional[List[Student]]
 
 class Department(BaseModel):
     id: int
@@ -22,4 +22,4 @@ class Faculty(BaseModel):
     id: int
     name: Optional[str]
     location: Optional[str]
-    depts: List[Department]
+    # depts: List[Department]
