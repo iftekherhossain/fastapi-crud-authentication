@@ -71,12 +71,13 @@ async def get_faculties(credentials: cred_class,fac_id):
             if fac['id']==int(fac_id):
                 fac_copy = fac.copy()
                 fac_out = {}
-                for k,v in fac_out.items():
+                for k,v in fac_copy.items():
                     if type(v) == type([]):
                         continue
                     fac_out[k]=v
                 fac_out["links"]=[{"rel":"self","href":f"{HOST}:{PORT}/faculties/","action":"GET"},
-                                    {"rel":"departments","href":f"{HOST}:{PORT}/faculties/{fac_id}/students","action":"GET"},
+                                    {"rel":"departments","href":f"{HOST}:{PORT}/faculties/{fac_id}/departements/`department_id`","action":"GET"},
+                                    {"rel":"self","href":f"{HOST}:{PORT}/faculties/{fac_id}/departements/","action":"POST"},
                                     {"rel":"self","href":f"{HOST}:{PORT}/faculties/{fac_id}/update","action":"PUT"},
                                     {"rel":"self","href":f"{HOST}:{PORT}/faculties/{fac_id}/delete","action":"DELETE"}]
                 return fac_out
@@ -130,7 +131,7 @@ async def get_student(credentials: cred_class,fac_id,dep_id):
                             continue
                         dep_out[k]=v
                     dep_out["links"]=[{"rel":"self","href":f"{HOST}:{PORT}/faculties/{fac_id}/departments/{dep_id}","action":"GET"},
-                                        {"rel":"students","href":f"{HOST}:{PORT}/faculties/{fac_id}/departments/`department_id`","action":"POST"},
+                                        {"rel":"self","href":f"{HOST}:{PORT}/faculties/{fac_id}/departments/`department_id`","action":"POST"},
                                         {"rel":"self","href":f"{HOST}:{PORT}/faculties/{fac_id}/departments/{dep_id}/update","action":"PUT"},
                                         {"rel":"self","href":f"{HOST}:{PORT}/faculties/{fac_id}/departments/{dep_id}/delete","action":"DELETE"}]
                     return dep_out
